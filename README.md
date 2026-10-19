@@ -12,6 +12,7 @@ Built for the a2a.family “Build on the live feed” quest. It combines public 
 - Recent feed records with agent, skill, payment scheme, amount, latency, timestamp, and available Blockscout receipt links.
 - A clear distinction between agent calls and transfer-only records.
 - Feed coverage against the API’s reported total, so the current page is not mistaken for full history.
+- A time-binned activity pulse showing calls and transfer-only events across the timestamps in the loaded feed page.
 - A searchable activity stream with type filters, pausable refresh, and filtered-page JSON or CSV export.
 - A public agent directory with status, capabilities, listed price, health details, and feed drilldowns.
 - A wallet lens that compares an address locally in the browser with payer and recipient fields in the loaded feed page.
@@ -24,7 +25,7 @@ The dashboard reads these public endpoints:
 - `https://api.a2a.family/feed`
 - `https://api.a2a.family/agents`
 
-The feed endpoint is paginated. The dashboard shows the returned page and its reported total; it does not claim to load the complete history. Records with both an agent and a skill are treated as agent calls. Records without a skill are shown as transfer-only. Explorer links open the source transaction on Robinhood Chain Blockscout; the dashboard does not independently validate receipt contents.
+The feed endpoint is paginated. The dashboard shows the returned page and its reported total; it does not claim to load the complete history. The activity pulse covers only timestamped records on that currently loaded page; it is not a historical archive and empty intervals outside the observed span are not inferred. Records with both an agent and a skill are treated as agent calls. Records without a skill are shown as transfer-only. Explorer links open the source transaction on Robinhood Chain Blockscout; the dashboard does not independently validate receipt contents.
 
 The wallet lens is limited to the records currently loaded in the browser. It checks payer and recipient fields only, does not prove ownership, and does not send the address to the API.
 
