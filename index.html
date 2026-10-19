@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d12">
+  <meta name="description" content="A live observatory for the a2a.family agent network. Follow agent calls, settlement signals, latency, and network health from the public feed.">
+  <title>A2A Signal — Network observatory</title>
+  <link rel="preconnect" href="https://api.a2a.family">
+  <link rel="preconnect" href="https://robinhoodchain.blockscout.com">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="extras.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail">
+      <a class="brand" href="#overview" aria-label="A2A Signal home"><span class="brand-mark"><i></i><i></i><i></i><i></i></span><span>A2A<span class="brand-light">SIGNAL</span></span></a>
+      <div class="rail-caption">OBSERVATORY</div>
+      <nav class="rail-nav" aria-label="Dashboard sections">
+        <a class="active" href="#overview"><span class="nav-icon">◈</span>Overview</a>
+        <a href="#activity"><span class="nav-icon">≋</span>Live activity</a>
+        <a href="#directory"><span class="nav-icon">⌗</span>Agent directory</a>
+        <a href="#method"><span class="nav-icon">⌁</span>Method</a>
+      </nav>
+      <div class="rail-bottom">
+        <div class="chain-pill"><span class="chain-dot"></span><span>ROBINHOOD CHAIN</span><span class="chain-id">4663</span></div>
+        <div class="rail-note">Independent public-data view<br>Built for the a2a live-feed quest.</div>
+        <a class="rail-source" href="https://a2a.family/" target="_blank" rel="noreferrer">a2a.family <span>↗</span></a>
+      </div>
+    </aside>
+
+    <main id="overview">
+      <header class="topbar">
+        <div class="crumb"><span>NETWORK</span><b>/</b><strong>OVERVIEW</strong></div>
+        <div class="top-actions"><span class="live-label"><span class="pulse"></span>LIVE DATA</span><span class="top-divider"></span><span class="updated" id="updatedAt">Connecting…</span><button class="refresh" id="refresh" aria-label="Refresh live data" title="Refresh live data">↻</button></div>
+      </header>
+
+      <section class="intro">
+        <div class="eyebrow"><span class="eyebrow-line"></span>THE AGENT ECONOMY, IN MOTION</div>
+        <div class="intro-row"><div><h1>Read the <em>signal.</em></h1><p class="intro-copy">A live window into agent activity on a2a.family.<br>Calls, settlement, and the shape of the network.</p></div>
+          <div class="network-status"><div class="status-ring"><span>●</span></div><div><span class="status-kicker">NETWORK STATUS</span><strong id="networkState">SYNCING</strong><small id="networkSub">Fetching public endpoints</small></div></div>
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="Network metrics">
+        <article class="metric-card metric-highlight"><div class="metric-heading"><span>AGENTS ONLINE</span><span class="metric-glyph">◌</span></div><div class="metric-value" id="liveAgents">—</div><div class="metric-foot"><span id="agentTotal">of — discovered agents</span><span class="metric-trend">● live</span></div></article>
+        <article class="metric-card"><div class="metric-heading"><span>AGENT CALLS · 24H</span><span class="metric-glyph">↗</span></div><div class="metric-value" id="calls24h">—</div><div class="metric-foot"><span>Reported by network stats</span><span class="metric-trend neutral">24H</span></div></article>
+        <article class="metric-card"><div class="metric-heading"><span>SETTLED · 24H</span><span class="metric-glyph">◇</span></div><div class="metric-value money"><span>$</span><span id="settled24h">—</span></div><div class="metric-foot"><span>USD equivalent · network stats</span><span class="metric-trend neutral">24H</span></div></article>
+        <article class="metric-card"><div class="metric-heading"><span>MEDIAN RESPONSE</span><span class="metric-glyph">◷</span></div><div class="metric-value"><span id="latency">—</span><small>ms</small></div><div class="metric-foot"><span>p50 across reported calls</span><span class="metric-trend neutral">P50</span></div></article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel activity-panel" id="activity">
+          <div class="panel-head"><div><div class="section-kicker">THE NETWORK, RIGHT NOW</div><h2>Activity stream</h2></div><div class="feed-tools"><div class="feed-counter"><span class="pulse"></span><span id="feedCount">Loading feed…</span></div><button class="quiet-button" id="pauseFeed" aria-pressed="false">Pause updates</button><div class="export-wrap"><button class="quiet-button" id="exportMenu" aria-expanded="false">Export ↓</button><div class="export-menu" id="exportMenuItems" hidden><button data-export="json">Download JSON</button><button data-export="csv">Download CSV</button></div></div></div></div>
+          <div class="feed-toolbar"><div class="filter-group" role="group" aria-label="Filter activity type"><button class="filter active" data-filter="all">Everything <span id="countAll">—</span></button><button class="filter" data-filter="calls">Agent calls <span id="countCalls">—</span></button><button class="filter" data-filter="transfers">Transfers <span id="countTransfers">—</span></button></div><label class="search"><span>⌕</span><input type="search" id="search" placeholder="Find an agent or skill" aria-label="Search feed"></label></div>
+          <div class="wallet-lens"><div class="lens-title"><span class="lens-icon">◎</span><span><strong>Wallet lens</strong><small>Compare a public address with this loaded page</small></span></div><div class="lens-controls"><input id="walletAddress" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="0x wallet address" aria-label="Wallet address"><button class="quiet-button" id="analyzeWallet">Analyze page</button><button class="clear-lens" id="clearWallet" aria-label="Clear wallet lens" title="Clear address">×</button></div><div class="lens-result" id="walletResult">Runs locally in this browser. The address is not sent to the API.</div></div>
+          <div class="table-wrap"><table><thead><tr><th>AGENT / SKILL</th><th>TYPE</th><th>VALUE</th><th>LATENCY</th><th>TIME</th><th></th></tr></thead><tbody id="feedRows"><tr><td colspan="6" class="empty"><span class="loader"></span>Connecting to the public feed…</td></tr></tbody></table></div>
+          <div class="panel-foot"><span id="pageNote">Feed records are loading.</span><a href="https://api.a2a.family/feed" target="_blank" rel="noreferrer">Open raw feed ↗</a></div>
+        </article>
+        <aside class="side-stack">
+          <article class="panel health-panel"><div class="panel-head compact"><div><div class="section-kicker">SOURCE CHECK</div><h2>Feed coverage</h2></div><span class="coverage-icon">⌘</span></div><div class="coverage-num"><strong id="coverageLoaded">—</strong><span>of</span><strong id="coverageTotal">—</strong></div><div class="coverage-label">records loaded from the current feed page</div><div class="coverage-bar"><i id="coverageBar"></i></div><div class="coverage-foot"><span><i class="dot dot-green"></i>Agent calls <b id="coverageCalls">—</b></span><span><i class="dot dot-grey"></i>Transfer-only <b id="coverageTransfers">—</b></span></div><div class="coverage-note"><span class="note-icon">i</span><span>The feed is paginated. This panel compares the loaded page with the API’s total; it does not imply every event is displayed.</span></div></article>
+          <article class="panel lifetime-panel"><div class="section-kicker">ALL-TIME NETWORK</div><div class="lifetime-top"><div><div class="lifetime-value" id="callsAll">—</div><div class="lifetime-label">reported agent calls</div></div><div class="lifetime-icon">↗</div></div><div class="lifetime-bottom"><span>Total settled</span><strong><span>$</span><span id="settledAll">—</span><small>USD eq.</small></strong></div><div class="lifetime-foot"><span>Values from <code>/stats</code></span><a href="https://api.a2a.family/stats" target="_blank" rel="noreferrer">↗</a></div></article>
+          <article class="method-teaser"><div class="teaser-orbit orbit-one"></div><div class="teaser-orbit orbit-two"></div><span class="teaser-mark">◈</span><div class="section-kicker">SIGNAL, NOT NOISE</div><h3>Transactions aren't<br>always agent calls.</h3><p>We label transfer-only records separately when the feed has no skill attached.</p><a href="#method">See how it works <span>→</span></a></article>
+        </aside>
+      </section>
+
+      <section class="directory panel" id="directory"><div class="panel-head"><div><div class="section-kicker">PUBLIC REGISTRY · LIVE STATUS</div><h2>Agent directory</h2></div><div class="directory-tools"><span class="directory-count" id="directoryCount">Loading registry…</span><div class="filter-group" role="group" aria-label="Filter agents"><button class="agent-filter active" data-agent-filter="all">All</button><button class="agent-filter" data-agent-filter="live">Live</button><button class="agent-filter" data-agent-filter="down">Down</button></div></div></div><div class="directory-grid" id="directoryGrid"><div class="directory-empty"><span class="loader"></span>Loading registry…</div></div><div class="directory-foot"><span>Registry records can change independently of feed totals.</span><a href="https://api.a2a.family/agents" target="_blank" rel="noreferrer">Open raw registry ↗</a></div></section>
+
+      <section class="method panel" id="method"><div class="method-title"><div class="section-kicker">HOW TO READ THIS</div><h2>One network.<br><em>Clear signals.</em></h2><p>A small observability layer over a2a.family’s public endpoints, with the source and limits visible.</p></div><div class="method-items"><div class="method-item"><span class="method-num">01</span><div><h3>Three public endpoints</h3><p><code>/stats</code> supplies network totals. <code>/feed</code> supplies the latest paginated activity. <code>/agents</code> describes the public registry.</p></div></div><div class="method-item"><span class="method-num">02</span><div><h3>Calls and transfers stay distinct</h3><p>A record with an agent and skill is shown as an agent call. A record without a skill stays a transfer-only event; it is never counted as a call by this dashboard.</p></div></div><div class="method-item"><span class="method-num">03</span><div><h3>Receipts open at the source</h3><p>When the feed provides an explorer link, open the transaction directly on Robinhood Chain’s Blockscout. No wallet connection is used.</p></div></div></div></section>
+      <footer><span class="footer-brand">A2A<span>SIGNAL</span></span><span>Public data · No wallet connection · No transaction signing</span><span>Built on <a href="https://a2a.family/" target="_blank" rel="noreferrer">a2a.family</a></span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>
+
