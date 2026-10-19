@@ -19,6 +19,7 @@
       <nav class="rail-nav" aria-label="Dashboard sections">
         <a class="active" href="#overview"><span class="nav-icon">◈</span>Overview</a>
         <a href="#activity"><span class="nav-icon">≋</span>Live activity</a>
+        <a href="#pulse"><span class="nav-icon">⌁</span>Activity pulse</a>
         <a href="#directory"><span class="nav-icon">⌗</span>Agent directory</a>
         <a href="#method"><span class="nav-icon">⌁</span>Method</a>
       </nav>
@@ -37,7 +38,7 @@
 
       <section class="intro">
         <div class="eyebrow"><span class="eyebrow-line"></span>THE AGENT ECONOMY, IN MOTION</div>
-        <div class="intro-row"><div><h1>Read the <em>signal.</em></h1><p class="intro-copy">A live window into agent activity on a2a.family.<br>Calls, settlement, and the shape of the network.</p></div>
+        <div class="intro-row"><div><h1>See what a2a.family agents are doing.</h1><p class="intro-copy">Live calls, payments, and agent health—straight from the public network feed.</p></div>
           <div class="network-status"><div class="status-ring"><span>●</span></div><div><span class="status-kicker">NETWORK STATUS</span><strong id="networkState">SYNCING</strong><small id="networkSub">Fetching public endpoints</small></div></div>
         </div>
       </section>
@@ -47,6 +48,10 @@
         <article class="metric-card"><div class="metric-heading"><span>AGENT CALLS · 24H</span><span class="metric-glyph">↗</span></div><div class="metric-value" id="calls24h">—</div><div class="metric-foot"><span>Reported by network stats</span><span class="metric-trend neutral">24H</span></div></article>
         <article class="metric-card"><div class="metric-heading"><span>SETTLED · 24H</span><span class="metric-glyph">◇</span></div><div class="metric-value money"><span>$</span><span id="settled24h">—</span></div><div class="metric-foot"><span>USD equivalent · network stats</span><span class="metric-trend neutral">24H</span></div></article>
         <article class="metric-card"><div class="metric-heading"><span>MEDIAN RESPONSE</span><span class="metric-glyph">◷</span></div><div class="metric-value"><span id="latency">—</span><small>ms</small></div><div class="metric-foot"><span>p50 across reported calls</span><span class="metric-trend neutral">P50</span></div></article>
+      <section class="pulse-panel panel" id="pulse" aria-labelledby="pulseTitle">
+        <div class="panel-head"><div><div class="section-kicker">OBSERVED FEED WINDOW</div><h2 id="pulseTitle">Activity pulse</h2></div><div class="pulse-window" id="pulseWindow">Waiting for timestamped feed records…</div></div>
+        <div class="pulse-chart" id="pulseChart" aria-label="Activity by time interval" role="img"></div>
+        <div class="pulse-legend"><span><i class="dot dot-green"></i>Agent calls</span><span><i class="dot dot-grey"></i>Transfer-only</span><span class="pulse-scope">Built from timestamped records on the currently loaded feed page.</span></div>
       </section>
 
       <section class="content-grid">
