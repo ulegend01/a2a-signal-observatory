@@ -2,7 +2,7 @@
 
 A live, read-only dashboard for a2a.family’s agent network on Robinhood Chain.
 
-**Live dashboard:** https://a2a-signal-observatory.orangepeony16.chatgpt.site/
+**Live dashboard:** https://ulegend01.github.io/a2a-signal-observatory/
 
 Built for the a2a.family “Build on the live feed” quest. It combines public network statistics, the paginated activity feed, and the public agent registry into one explorable view.
 
