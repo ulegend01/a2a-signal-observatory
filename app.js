@@ -76,6 +76,53 @@
       ? `Showing ${number(rows.length)} of ${number(data.total)} feed records. This is a paginated page, not the full history.`
       : `Showing ${number(rows.length)} of ${number(data.total ?? rows.length)} feed records from the latest API response.`;
     paintRows();
+    renderPulse(rows);
+  }
+  function renderPulse(rows) {
+    const chart = $("pulseChart");
+    const windowLabel = $("pulseWindow");
+    chart.replaceChildren();
+    const dated = (Array.isArray(rows) ? rows : []).map((row) => ({
+      row,
+      time: new Date(row.at).getTime(),
+    })).filter((item) => Number.isFinite(item.time)).sort((a, b) => a.time - b.time);
+    if (!dated.length) {
+      chart.setAttribute("aria-label", "No timestamped activity is available in the loaded feed page.");
+      chart.append(el("div", "pulse-empty", "No usable timestamps in this feed page."));
+      windowLabel.textContent = `${number(rows.length)} loaded records · none with usable timestamps`;
+      return;
+    }
+    const first = dated[0].time;
+    const last = dated[dated.length - 1].time;
+    const span = Math.max(1, last - first);
+    const bins = Array.from({ length: 8 }, (_, index) => ({ index, calls: 0, transfers: 0 }));
+    for (const item of dated) {
+      const index = Math.min(bins.length - 1, Math.floor(((item.time - first) / span) * bins.length));
+      if (isCall(item.row)) bins[index].calls += 1;
+      else bins[index].transfers += 1;
+    }
+    const peak = Math.max(1, ...bins.map((bin) => bin.calls + bin.transfers));
+    const formatTime = (time) => new Date(time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    for (const bin of bins) {
+      const total = bin.calls + bin.transfers;
+      const column = el("div", "pulse-column");
+      const stack = el("div", "pulse-stack");
+      stack.setAttribute("aria-hidden", "true");
+      const callBar = el("i", "pulse-call-bar");
+      const transferBar = el("i", "pulse-transfer-bar");
+      callBar.style.height = `${(bin.calls / peak) * 100}%`;
+      transferBar.style.height = `${(bin.transfers / peak) * 100}%`;
+      stack.append(callBar, transferBar);
+      const intervalStart = first + (span * bin.index / bins.length);
+      const intervalEnd = first + (span * (bin.index + 1) / bins.length);
+      column.title = `${formatTime(intervalStart)}–${formatTime(intervalEnd)} · ${bin.calls} calls · ${bin.transfers} transfers`;
+      column.append(stack, el("span", "pulse-tick", bin.index % 2 === 0 ? formatTime(intervalStart) : ""));
+      if (!total) column.classList.add("is-empty");
+      chart.append(column);
+    }
+    const calls = dated.filter((item) => isCall(item.row)).length;
+    windowLabel.textContent = `${number(dated.length)} timestamped · ${number(calls)} calls · ${number(dated.length - calls)} transfers · ${formatTime(first)}–${formatTime(last)}`;
+    chart.setAttribute("aria-label", `Loaded feed page activity from ${new Date(first).toLocaleString()} to ${new Date(last).toLocaleString()}: ${calls} agent calls and ${dated.length - calls} transfer-only records across eight intervals.`);
   }
   function renderAgents(data) {
     const agents = Array.isArray(data.agents) ? data.agents : [];
