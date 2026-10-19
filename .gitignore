@@ -1,0 +1,10 @@
+.openai/
+dist/
+a2a-signal-deploy.tar.gz
+node_modules/
+coverage/
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
